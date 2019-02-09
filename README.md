@@ -1,1 +1,1 @@
-# recipes_app
+# recipes_api
