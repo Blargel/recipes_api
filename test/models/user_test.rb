@@ -39,4 +39,9 @@ class UserTest < ActiveSupport::TestCase
 
     assert user.save, "Failed to save user with valid fields"
   end
+
+  test "should not display user's password_digest in json responses" do
+    user = User.first
+    assert_not_includes user.as_json.keys, :password_digest
+  end
 end
