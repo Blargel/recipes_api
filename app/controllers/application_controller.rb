@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::API
+  include JsonHandler
+  include ExceptionHandler
+
   before_action :set_resource, only: [:show, :update, :destroy]
 
   def index
@@ -16,7 +19,7 @@ class ApplicationController < ActionController::API
   end
 
   def update
-    @resource.update(resource_params)
+    @resource.update!(resource_params)
     head :no_content
   end
 
@@ -47,9 +50,5 @@ class ApplicationController < ActionController::API
 
   def resource_params
     params.permit(*params_whitelist)
-  end
-
-  def render_json body, status=:ok
-    render json: body, status: status
   end
 end

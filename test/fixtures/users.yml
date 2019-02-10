@@ -2,4 +2,7 @@
 
 one:
   name: Dave
-  password_digest: thisistotallyalegitdigestiswear
+  password_digest: ThisIsTotallyALegitDigestISwear
+two:
+  name: Bill
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
