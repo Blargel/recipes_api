@@ -10,8 +10,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     get user_recipes_path(@user.id)
 
     assert_response :success
-    assert_kind_of Array, parsed_response
-    assert_not_empty parsed_response
+    assert_kind_of Hash, parsed_response
+    assert_not_empty parsed_response["recipes"]
   end
 
   test "show endpoint returns success if recipe exists" do

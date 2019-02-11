@@ -12,7 +12,16 @@ class ApplicationController < ActionController::API
     else
       @resources = model.all
     end
-    render_json(@resources)
+
+    count = @resources.count
+    @resources = @resources.page(params[:page])
+
+    json = {
+      "count" => count,
+      model.to_s.underscore.pluralize => @resources
+    }
+
+    render_json(json)
   end
 
   def create

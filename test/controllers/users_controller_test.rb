@@ -5,12 +5,32 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     @user = users(:dave)
   end
 
-  test "index endpoint returns success" do
+  test "index endpoint paginates by default" do
     get users_path
 
     assert_response :success
-    assert_kind_of Array, parsed_response
-    assert_not_empty parsed_response
+    assert_equal 25, parsed_response["users"].count
+    assert_equal 31, parsed_response["count"]
+  end
+
+  test "index endpoint can change pages" do
+    params = { page: 1 }
+    get users_path, params: params
+
+    assert_response :success
+    assert_equal 25, parsed_response["users"].count
+    assert_equal 31, parsed_response["count"]
+    page1_ids = parsed_response["users"].map{ |u| u["id"] }
+
+    params = { page: 2}
+    get users_path, params: params
+
+    assert_response :success
+    assert_equal 6, parsed_response["users"].count
+    assert_equal 31, parsed_response["count"]
+    page2_ids = parsed_response["users"].map{ |u| u["id"] }
+
+    assert_equal 0, (page1_ids & page2_ids).count
   end
 
   test "show endpoint returns success if user exists" do
