@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @user = users(:dave)
+  end
+
   test "index endpoint returns success" do
     get users_path
 
@@ -10,12 +14,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns success if user exists" do
-    user_id = User.first.id
-    get user_path(user_id)
+    get user_path(@user.id)
 
     assert_response :success
     assert_kind_of Hash, parsed_response
-    assert_equal user_id, parsed_response["id"]
+    assert_equal @user.id, parsed_response["id"]
   end
 
   test "show endpoint returns error if user doesn't exist" do
@@ -53,13 +56,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update endpiont returns success if validations pass" do
-    user_id = User.first.id
     params = {
-      name: "Jacob",
+      name: "Sora",
       password: "uncrackable",
       password_confirmation: "uncrackable"
     }
-    put user_path(user_id), params: params
+    put user_path(@user.id), params: params
 
     assert_response :success
     assert_empty @response.body
@@ -67,7 +69,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "update endpoint returns error if user does not exist" do
     params = {
-      name: "Jacob",
+      name: "Sora",
       password: "uncrackable",
       password_confirmation: "uncrackable"
     }
@@ -79,13 +81,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update endpoint returns error validations fail" do
-    user_id = User.first.id
     params = {
-      name: "Jacob",
+      name: "Sora",
       password: "uncrackable",
       password_confirmation: "wait what"
     }
-    put user_path(user_id), params: params
+    put user_path(@user.id), params: params
 
     assert_response :unprocessable_entity
     assert_kind_of Hash, parsed_response
@@ -93,8 +94,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "delete endpoint returns success if user exists" do
-    user_id = User.first.id
-    delete user_path(user_id)
+    delete user_path(@user.id)
 
     assert_response :success
     assert_empty @response.body

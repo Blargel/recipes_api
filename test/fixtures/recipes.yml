@@ -3,9 +3,9 @@
 one:
   title: A delicious recipe
   description: I promise this is a super tasty dish that everyone loves.
-  user: one
+  user: dave
 
 two:
   title: A horrible recipe
   description: Don't ever make this. Your kitchen will explode.
-  user: two
+  user: bill

@@ -1,9 +1,13 @@
 require 'test_helper'
 
 class RecipesControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @recipe = recipes(:one)
+    @user = @recipe.user
+  end
+
   test "index endpoint returns success" do
-    user = User.first
-    get user_recipes_path(user.id)
+    get user_recipes_path(@user.id)
 
     assert_response :success
     assert_kind_of Array, parsed_response
@@ -11,19 +15,16 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns success if recipe exists" do
-    user = User.first
-    recipe = user.recipes.first
-    get user_recipe_path(user.id, recipe.id)
+    get user_recipe_path(@user.id, @recipe.id)
 
     assert_response :success
     assert_kind_of Hash, parsed_response
-    assert_equal recipe.id, parsed_response["id"]
-    assert_equal user.id, parsed_response["user_id"]
+    assert_equal @recipe.id, parsed_response["id"]
+    assert_equal @user.id, parsed_response["user_id"]
   end
 
   test "show endpoint returns error if recipe doesn't exist but user does" do
-    user = User.first
-    get user_recipe_path(user.id, 0)
+    get user_recipe_path(@user.id, 0)
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -31,8 +32,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns error if user doesn't exist but recipe does" do
-    recipe = Recipe.first
-    get user_recipe_path(0, recipe.id)
+    get user_recipe_path(0, @recipe.id)
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -40,10 +40,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns error if recipe does not belong to user" do
-    user1 = User.first
-    user2 = User.last
-    recipe = user1.recipes.first
-    get user_recipe_path(user2, recipe.id)
+    other_user = users(:jerry)
+    get user_recipe_path(other_user, @recipe.id)
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -51,12 +49,11 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create endpoint returns success if validations pass" do
-    user = User.first
     params = {
       title: "Pizza",
       description: "It's literally just a pizza."
     }
-    post user_recipes_path(user.id), params: params
+    post user_recipes_path(@user.id), params: params
 
     assert_response :success
     assert_kind_of Hash, parsed_response
@@ -64,12 +61,11 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create endpoint returns error if validations fail" do
-    user = User.first
     params = {
       title: "",
       description: "Gasp! A mysterious recipe!"
     }
-    post user_recipes_path(user.id), params: params
+    post user_recipes_path(@user.id), params: params
 
     assert_response :unprocessable_entity
     assert_kind_of Hash, parsed_response
@@ -77,25 +73,22 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update endpiont returns success if validations pass" do
-    user = User.first
-    recipe = user.recipes.first
     params = {
       title: "Oxtail soup",
       description: "This is actually my favorite soup, by the way."
     }
-    put user_recipe_path(user.id, recipe.id), params: params
+    put user_recipe_path(@user.id, @recipe.id), params: params
 
     assert_response :success
     assert_empty @response.body
   end
 
   test "update endpoint returns error if recipe does not exist" do
-    user = User.first
     params = {
       title: "Oxtail soup",
       description: "This is actually my favorite soup, by the way."
     }
-    put user_recipe_path(user.id, 0), params: params
+    put user_recipe_path(@user.id, 0), params: params
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -103,13 +96,11 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "update endpoint returns error validations fail" do
-    user = User.first
-    recipe = user.recipes.first
     params = {
       title: "",
       description: "Wow! More mysterious recipes!"
     }
-    put user_recipe_path(user.id, recipe.id), params: params
+    put user_recipe_path(@user.id, @recipe.id), params: params
 
     assert_response :unprocessable_entity
     assert_kind_of Hash, parsed_response
@@ -117,17 +108,14 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "delete endpoint returns success if recipe exists" do
-    user = User.first
-    recipe = user.recipes.first
-    delete user_recipe_path(user.id, recipe.id)
+    delete user_recipe_path(@user.id, @recipe.id)
 
     assert_response :success
     assert_empty @response.body
   end
 
   test "delete endpoint returns error if recipe does not exist" do
-    user = User.first
-    delete user_recipe_path(user.id, 0)
+    delete user_recipe_path(@user.id, 0)
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response

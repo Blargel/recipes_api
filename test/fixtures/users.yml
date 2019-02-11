@@ -1,8 +1,95 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+dave:
   name: Dave
   password_digest: ThisIsTotallyALegitDigestISwear
-two:
+bill:
   name: Bill
   password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+jessy:
+  name: Jessy
+  password_digest: ThisIsTotallyALegitDigestISwear
+marco:
+  name: Marco
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+sam:
+  name: Sam
+  password_digest: ThisIsTotallyALegitDigestISwear
+alexa:
+  name: Alexa
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+jacob:
+  name: Jacob
+  password_digest: ThisIsTotallyALegitDigestISwear
+sherry:
+  name: Sherry
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+jane:
+  name: Jane
+  password_digest: ThisIsTotallyALegitDigestISwear
+barry:
+  name: Barry
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+aaron:
+  name: Aaron
+  password_digest: ThisIsTotallyALegitDigestISwear
+jack:
+  name: Jack
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+elizabeth:
+  name: Elizabeth
+  password_digest: ThisIsTotallyALegitDigestISwear
+erin:
+  name: Erin
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+timothy:
+  name: Timothy
+  password_digest: ThisIsTotallyALegitDigestISwear
+sarah:
+  name: Sarah
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+donald:
+  name: Donald
+  password_digest: ThisIsTotallyALegitDigestISwear
+jerry:
+  name: Jerry
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+jonathon:
+  name: Jonathon
+  password_digest: ThisIsTotallyALegitDigestISwear
+jamal:
+  name: Jamal
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+jesus:
+  name: Jesus
+  password_digest: ThisIsTotallyALegitDigestISwear
+kimberly:
+  name: Kimberly
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+vladimir:
+  name: Vladimir
+  password_digest: ThisIsTotallyALegitDigestISwear
+george:
+  name: George
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+jorge:
+  name: Jorge
+  password_digest: ThisIsTotallyALegitDigestISwear
+joshua:
+  name: Joshua
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+cassandra:
+  name: Cassandra
+  password_digest: ThisIsTotallyALegitDigestISwear
+toby:
+  name: Toby
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+joyce:
+  name: Joyce
+  password_digest: ThisIsTotallyALegitDigestISwear
+robert:
+  name: Robert
+  password_digest: AnotherLegitDigestDontEvenThinkAboutIt
+bobby:
+  name: Bobby
+  password_digest: ThisIsTotallyALegitDigestISwear
