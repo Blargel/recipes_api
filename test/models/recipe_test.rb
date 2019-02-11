@@ -35,5 +35,7 @@ class RecipeTest < ActiveSupport::TestCase
     recipe = Recipe.new
     recipe.user_id = user.id
     recipe.title = "Cheese Danish"
+
+    assert recipe.save, "Failed to save the recipe with valid data"
   end
 end

@@ -3,11 +3,11 @@
 one:
   title: MyString
   description: MyText
-  order: 1
+  order: 99
   recipe: one
 
 two:
   title: MyString
   description: MyText
-  order: 1
+  order: 99
   recipe: two

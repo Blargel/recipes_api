@@ -3,5 +3,4 @@ class RecipeStep < ApplicationRecord
 
   validates :title, :order, presence: true
   validates :order, uniqueness: { scope: :recipe_id }
-  validates :recipe, presence: true
 end

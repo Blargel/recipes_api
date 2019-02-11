@@ -2,13 +2,13 @@ class ApplicationController < ActionController::API
   include JsonHandler
   include ExceptionHandler
 
-  before_action :set_parent_chain
+  before_action :set_direct_parent
   before_action :set_resource, only: [:show, :update, :destroy]
 
   def index
     if has_parents?
       children_method = model.to_s.underscore.pluralize
-      @resources = @parent_chain.send(children_method)
+      @resources = @direct_parent.send(children_method)
     else
       @resources = model.all
     end
@@ -65,20 +65,20 @@ class ApplicationController < ActionController::API
     pparams
   end
 
-  def set_parent_chain
+  def set_direct_parent
     return unless has_parents?
 
-    @parent_chain = nil
+    @direct_parent = nil
 
     parents.each do |parent|
       @parent_id_key = (parent.to_s.underscore + "_id").to_sym
       parent_id = params[@parent_id_key]
 
-      if @parent_chain.nil?
-        @parent_chain = parent.find parent_id
+      if @direct_parent.nil?
+        @direct_parent = parent.find parent_id
       else
-        children_method = parent.to_s.pluralize
-        @parent_chain = @parent_chain.send(children_method).find(parent_id)
+        children_method = parent.to_s.underscore.pluralize
+        @direct_parent = @direct_parent.send(children_method).find(parent_id)
       end
     end
   end
@@ -86,7 +86,7 @@ class ApplicationController < ActionController::API
   def set_resource
     if has_parents?
       children_method = model.to_s.underscore.pluralize
-      @resource = @parent_chain.send(children_method).find(params[:id])
+      @resource = @direct_parent.send(children_method).find(params[:id])
     else
       @resource = model.find params[:id]
     end
