@@ -13,6 +13,8 @@ gem 'puma', '~> 3.11'
 gem 'bcrypt', '~> 3.1.7'
 # Use kaminari for pagination
 gem 'kaminari'
+# Use jwt gem to create JSON web tokens for authorization
+gem 'jwt'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
