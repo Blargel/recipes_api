@@ -5,10 +5,15 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
     @step = recipe_steps(:one)
     @recipe = @step.recipe
     @user = @recipe.user
+
+    token = JsonWebToken.encode(user_id: @user.id)
+    @auth_header = {
+      authorization: token
+    }
   end
 
   test "index endpoint returns success" do
-    get user_recipe_recipe_steps_path(@user.id, @recipe.id)
+    get user_recipe_recipe_steps_path(@user.id, @recipe.id), headers: @auth_header
 
     assert_response :success
     assert_kind_of Hash, parsed_response
@@ -16,7 +21,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns success if step exists" do
-    get user_recipe_recipe_step_path(@user.id, @recipe.id, @step.id)
+    get user_recipe_recipe_step_path(@user.id, @recipe.id, @step.id), headers: @auth_header
 
     assert_response :success
     assert_kind_of Hash, parsed_response
@@ -25,7 +30,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns error if step doesn't exist" do
-    get user_recipe_recipe_step_path(@user.id, @recipe.id, 0)
+    get user_recipe_recipe_step_path(@user.id, @recipe.id, 0), headers: @auth_header
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -33,7 +38,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns error if recipe doesn't exist" do
-    get user_recipe_recipe_step_path(@user.id, 0, @step.id)
+    get user_recipe_recipe_step_path(@user.id, 0, @step.id), headers: @auth_header
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -41,7 +46,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns error if user doesn't exist" do
-    get user_recipe_recipe_step_path(0, @recipe.id, @step.id)
+    get user_recipe_recipe_step_path(0, @recipe.id, @step.id), headers: @auth_header
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -50,7 +55,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
 
   test "show endpoint returns error if step does not belong to recipe" do
     other_step = recipe_steps(:two)
-    get user_recipe_recipe_step_path(@user.id, @recipe.id, other_step.id)
+    get user_recipe_recipe_step_path(@user.id, @recipe.id, other_step.id), headers: @auth_header
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -63,7 +68,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
       description: "I swear I know how to cook",
       order: 1
     }
-    post user_recipe_recipe_steps_path(@user.id, @recipe.id), params: params
+    post user_recipe_recipe_steps_path(@user.id, @recipe.id), params: params, headers: @auth_header
 
     assert_response :success
     assert_kind_of Hash, parsed_response
@@ -75,7 +80,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
       title: "Sear with a flamethrower",
       description: "I swear I know how to cook"
     }
-    post user_recipe_recipe_steps_path(@user.id, @recipe.id), params: params
+    post user_recipe_recipe_steps_path(@user.id, @recipe.id), params: params, headers: @auth_header
 
     assert_response :unprocessable_entity
     assert_kind_of Hash, parsed_response
@@ -88,7 +93,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
       description: "Make sure the grains are uniform because that's totally possible.",
       order: 2
     }
-    put user_recipe_recipe_step_path(@user.id, @recipe.id, @step.id), params: params
+    put user_recipe_recipe_step_path(@user.id, @recipe.id, @step.id), params: params, headers: @auth_header
 
     assert_response :success
     assert_empty @response.body
@@ -100,7 +105,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
       description: "Make sure the grains are uniform because that's totally possible.",
       order: 2
     }
-    put user_recipe_recipe_step_path(@user.id, @recipe.id, 0), params: params
+    put user_recipe_recipe_step_path(@user.id, @recipe.id, 0), params: params, headers: @auth_header
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -113,7 +118,7 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
       description: "Make sure the grains are uniform because that's totally possible.",
       order: 2
     }
-    put user_recipe_recipe_step_path(@user.id, @recipe.id, @step.id), params: params
+    put user_recipe_recipe_step_path(@user.id, @recipe.id, @step.id), params: params, headers: @auth_header
 
     assert_response :unprocessable_entity
     assert_kind_of Hash, parsed_response
@@ -121,14 +126,14 @@ class RecipeStepsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "delete endpoint returns success if step exists" do
-    delete user_recipe_recipe_step_path(@user.id, @recipe.id, @step.id)
+    delete user_recipe_recipe_step_path(@user.id, @recipe.id, @step.id), headers: @auth_header
 
     assert_response :success
     assert_empty @response.body
   end
 
   test "delete endpoint returns error if step does not exist" do
-    delete user_recipe_recipe_step_path(@user.id, @recipe.id, 0)
+    delete user_recipe_recipe_step_path(@user.id, @recipe.id, 0), headers: @auth_header
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response

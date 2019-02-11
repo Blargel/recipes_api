@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   include JsonHandler
   include ExceptionHandler
 
+  before_action :authenticate_request
   before_action :set_direct_parent
   before_action :set_resource, only: [:show, :update, :destroy]
 
@@ -103,5 +104,17 @@ class ApplicationController < ActionController::API
 
   def resource_params
     params.permit(*permitted_params)
+  end
+
+  def authenticate_request
+    auth_header = request.headers['Authorization']
+
+    if auth_header
+      auth_token = auth_header.split(' ').last
+      decoded_json = JsonWebToken.decode(auth_header)
+      @current_user = User.find(decoded_json[:user_id]) if decoded_json
+    end
+
+    render_json({ error: 'Not Authorized' }, :unauthorized) unless @current_user
   end
 end
