@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   test "index endpoint returns success" do
-    get "/users"
+    get users_path
 
     assert_response :success
     assert_kind_of Array, parsed_response
@@ -11,7 +11,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "show endpoint returns success if user exists" do
     user_id = User.first.id
-    get "/users/#{user_id}"
+    get user_path(user_id)
 
     assert_response :success
     assert_kind_of Hash, parsed_response
@@ -19,7 +19,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show endpoint returns error if user doesn't exist" do
-    get "/users/0"
+    get user_path(0)
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -32,7 +32,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       password: "very secure",
       password_confirmation: "very secure"
     }
-    post "/users", params: params
+    post users_path, params: params
 
     assert_response :success
     assert_kind_of Hash, parsed_response
@@ -45,7 +45,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       password: "very secure",
       password_confirmation: "much secure"
     }
-    post "/users", params: params
+    post users_path, params: params
 
     assert_response :unprocessable_entity
     assert_kind_of Hash, parsed_response
@@ -59,7 +59,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       password: "uncrackable",
       password_confirmation: "uncrackable"
     }
-    put "/users/#{user_id}", params: params
+    put user_path(user_id), params: params
 
     assert_response :success
     assert_empty @response.body
@@ -71,7 +71,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       password: "uncrackable",
       password_confirmation: "uncrackable"
     }
-    put "/users/0", params: params
+    put user_path(0), params: params
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response
@@ -85,7 +85,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       password: "uncrackable",
       password_confirmation: "wait what"
     }
-    put "/users/#{user_id}", params: params
+    put user_path(user_id), params: params
 
     assert_response :unprocessable_entity
     assert_kind_of Hash, parsed_response
@@ -94,14 +94,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "delete endpoint returns success if user exists" do
     user_id = User.first.id
-    delete "/users/#{user_id}"
+    delete user_path(user_id)
 
     assert_response :success
     assert_empty @response.body
   end
 
   test "delete endpoint returns error if user does not exist" do
-    delete "/users/0"
+    delete user_path(0)
 
     assert_response :not_found
     assert_kind_of Hash, parsed_response

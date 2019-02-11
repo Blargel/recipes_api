@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  description: MyText
+  title: A delicious recipe
+  description: I promise this is a super tasty dish that everyone loves.
   user: one
 
 two:
-  title: MyString
-  description: MyText
+  title: A horrible recipe
+  description: Don't ever make this. Your kitchen will explode.
   user: two
